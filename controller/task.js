@@ -2,7 +2,14 @@ const Task = require('../model/task')
 
 const getAllTasks = async (req,res) => {
     try {
+        
+        // this is a filter
+        // const tasks = await Task.find({completed: true})
+        // next project will have deep dive on filtering/sorting
+
+        // this is without filters
         const tasks = await Task.find({})
+        
         res.status(200).send({tasks})
     } catch (error) {
         res.status(404).send({message: error.message})
