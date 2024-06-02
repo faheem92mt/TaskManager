@@ -19,7 +19,9 @@ const connectDB = require('./db/connect')
 require('dotenv').config()
 
 const errorHandlerMiddleware = require('./middleware/errorHandler')
+// This will be used for those controllers that dont have an error defined ( like for createTask)
 app.use(errorHandlerMiddleware)
+// If we didnt use this -> then the 'default Express Error Handler' would be used as u can see in Postman
 
 const port = 3000
 
