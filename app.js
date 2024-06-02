@@ -18,7 +18,8 @@ app.use(notFound)
 const connectDB = require('./db/connect')
 require('dotenv').config()
 
-
+const errorHandlerMiddleware = require('./middleware/errorHandler')
+app.use(errorHandlerMiddleware)
 
 const port = 3000
 

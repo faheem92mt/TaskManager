@@ -1,33 +1,23 @@
 const Task = require('../model/task')
+const asyncWrapper = require('../middleware/async')
 
-const getAllTasks = async (req,res) => {
-    try {
-        
+const getAllTasks = asyncWrapper( async (req,res) => {
         // this is a filter
-        
         // const tasks = await Task.find({completed: true})
         // next project will have deep dive on filtering/sorting
-
         // this is without filters
-        const tasks = await Task.find({})
-        
+        const tasks = await Task.find({})     
         // res.status(200).send({tasks})
         // res.status(200).send({ tasks, noOfHits: tasks.length })
-        res.status(200).send({ status: "success", data: {tasks, noOfHits: tasks.length} })
+        res.status(200).send({ status: "success", data: {tasks, noOfHits: tasks.length} })  
+} )
 
-    } catch (error) {
-        res.status(404).send({message: error.message})
-    }
-}
+const createTask = asyncWrapper( async (req,res) => {
+    
+        const task = await Task.create(req.body)
+        res.status(201).json({task})
 
-const createTask = async (req,res) => {
-    try {
-        const task = Task.create(req.body)
-        res.status(201).send({task})
-    } catch (error) {
-        res.status(404).send({message: error.message})
-    }
-}
+} )
 
 const getTask = async (req,res) => {
     try {
@@ -69,30 +59,30 @@ const updateTask = async (req,res) => {
     // res.send('update task')
 }
 
-const editTask = async (req,res) => {
-    try {
+// const editTask = async (req,res) => {
+//     try {
 
-        const {id} = req.params
-        // 3rd parameter - options => to make sure we can't add empty names 
-        // (we do this by using validators)
-        // & to show the latest update immediately which wasn't the case at first
-        const task = await Task.findOneAndUpdate({_id:id},req.body,{
-            new: true,
-            runValidators: true,
-            overwrite: true
-        })
+//         const {id} = req.params
+//         // 3rd parameter - options => to make sure we can't add empty names 
+//         // (we do this by using validators)
+//         // & to show the latest update immediately which wasn't the case at first
+//         const task = await Task.findOneAndUpdate({_id:id},req.body,{
+//             new: true,
+//             runValidators: true,
+//             overwrite: true
+//         })
 
-        if (!task) {
-            return res.status(404).json({msg: `No task with id : ${id}`})
-        }
+//         if (!task) {
+//             return res.status(404).json({msg: `No task with id : ${id}`})
+//         }
 
-        res.status(200).json({ task })
+//         res.status(200).json({ task })
 
-    } catch (error) {
-        res.status(404).json({message: error.message})
-    }
-    // res.send('update task')
-}
+//     } catch (error) {
+//         res.status(404).json({message: error.message})
+//     }
+//     // res.send('update task')
+// }
 
 const deleteTask = async (req,res) => {
     try {
@@ -142,6 +132,5 @@ module.exports = {
     createTask,
     getTask,
     updateTask,
-    deleteTask,
-    editTask
+    deleteTask
 }
