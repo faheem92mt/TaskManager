@@ -20,7 +20,7 @@ const createTask = asyncWrapper( async (req,res) => {
 } )
 
 const getTask = asyncWrapper( async (req,res,next) => {
-    try {
+    
         // this is from url
         const {id} = req.params
         // find the entry from db where the _id matches with the one in url (i.e. id)
@@ -35,9 +35,7 @@ const getTask = asyncWrapper( async (req,res,next) => {
         }
 
         res.status(200).json({task})
-    } catch (error) {
-        res.status(404).json({message: error.message})
-    }
+   
     
     // res.json({id: req.params.id})
 } )
