@@ -1,4 +1,6 @@
 const Task = require('../model/task')
+const {createCustomError} = require('../errors/custom-error')
+
 const asyncWrapper = require('../middleware/async')
 
 const getAllTasks = asyncWrapper( async (req,res) => {
@@ -27,10 +29,15 @@ const getTask = asyncWrapper( async (req,res,next) => {
         const task = await Task.findOne({_id:id})
         
         if(!task) {
-            const error = new Error('Not Found')
-            error.status = 404
+            // const error = new Error('Not Found')
+            // error.status = 404
+
             // here -> I think next refers to the 'errorHandler' middleware
-            return next(error)
+            // future me -> yes it does cuz its the next middleware as defined in app.js
+            return next(createCustomError(`No task with id : ${id}`,404))
+
+
+
             // return res.status(404).json({msg: `No task with id : ${id}`})
         }
 
